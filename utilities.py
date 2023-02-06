@@ -120,3 +120,46 @@ def m_step(X, w):
             temp.append(w[i][j] * np.dot((X[j] - mu[i]).reshape(2, 1), (X[j] - mu[i]).reshape(1, 2)))
         sigma.append(np.sum(temp, axis=0) / np.sum(w[i]))
     return phi, mu, sigma
+
+
+
+def svm (X,Y,C):
+     learning_rate=0.001
+     _samples,_features = X.shape
+     w = np.zeros((1,_features))
+     b = 0
+     for i in range(1000):
+         gradw = 0
+         gradb = 0
+         for idx, x_i in enumerate(X):
+             if Y[idx] * (np.dot(w, x_i.T) + b)> 1:
+                 gradw += 0
+                 gradb += 0
+             else:
+                 gradw += C * Y[idx] * x_i
+                 gradb += C * Y[idx]
+                
+         w = w - learning_rate * w + learning_rate * gradw
+         b = b + learning_rate * gradb
+
+     return w,b
+
+def predict(X,w,b):
+    prediction = np.dot(X,w[0]) + b 
+    return np.sign(prediction)
+
+
+def plot_linear_svm(x,y,w,b):
+    plt.scatter(x[:,0], x[:,1], c=y, cmap ='viridis')
+    x_plot = np.random.choice(x[:,0], 100)
+    y_plot = [-1*(w[0][0]*i + b)/w[0][1] for i in x_plot]
+    y_plot1 = [-1*(w[0][0]*i + b+1)/w[0][1] for i in x_plot]
+    y_plot2 = [-1*(w[0][0]*i + b-1)/w[0][1] for i in x_plot]
+    plt.plot(x_plot, y_plot, color = 'black')
+    plt.plot(x_plot, y_plot1,  color = 'red', ls='--')
+    plt.plot(x_plot, y_plot2, ls = '--', color = 'green')
+    plt.show()    
+
+def RBF(X,sigma):
+    K = np.exp(-np.sum((X - X[:,np.newaxis])**2, axis = -1)/ (2 * (sigma ** 2)))
+    return K

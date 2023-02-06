@@ -4,15 +4,15 @@ import pandas as pd
 
 if __name__ == '__main__':
 
-    path=['./datasets/blobs.csv','./datasets/circle.csv','./datasets/elliptical.csv','./datasets/moon.csv']
+    path = ['./datasets/blobs.csv', './datasets/circle.csv', './datasets/elliptical.csv', './datasets/moon.csv']
     
     for i in range(4):
-        data=utl.load_data(path[i])
+        data = utl.load_data(path[i])
         print(data)
         X = data.iloc[:, :-1]
-        X=utl.Normalize(np.asanyarray(X))
+        X = utl.normalize(np.asanyarray(X))
         WCSS = []
-        for K in range(1,15):
-            clusters,means=utl.KMeans(X,K,300)
-            WCSS.append(utl.Wcss(clusters,means,K))
+        for K in range(1, 15):
+            clusters, means = utl.k_mans(X, K, 300)
+            WCSS.append(utl.Wcss(clusters, means, K))
         utl.plot_elbow(WCSS)
